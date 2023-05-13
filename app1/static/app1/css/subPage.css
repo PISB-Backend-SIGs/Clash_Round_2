@@ -124,6 +124,12 @@ thead, th{
     text-align: center;
 }
 
+#freeform{
+    width: 100%;
+    background-color: #10223b;
+    color: #fffff0;
+    overflow-x: hidden;
+}
 /* tbody tr:hover{
     background-color: #FFF6;
 } */

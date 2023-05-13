@@ -37,10 +37,17 @@ footer {
 }
 .badadiv{
     display: flex;
-    margin: auto 20px;
+    /* margin: auto 20px; */
     flex-wrap: wrap;
     grid-gap: 40px;
     justify-content: center;
+    /* display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: 
+    'card card card'
+    'card card card'; */
 }
 .question-table{
     border-spacing: 0px 15px;
@@ -216,7 +223,28 @@ footer {
 
 .backgr{
     color: #fefefe;
- 
+    display: flex;
+    justify-content: center;
+}
+
+h2{
+    color: #1292df;
+    margin: 15px auto;
+}
+
+/* .backgr{
+    color: #fefefe;
+    display: flex;
+    /* justify-content: center;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: 
+    'card card card'
+    'card card card'; */
+} */
+
+.card{
+    grid-area: card;
 }
 
 .progress{

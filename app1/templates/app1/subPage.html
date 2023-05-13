@@ -173,8 +173,12 @@
             </div> -->
             <div class = "modal-text container text-center">
             <textarea id="freeform" name="freeform" rows="14" cols="55">
-              {% comment %} {%  %}for submission  {% endcomment %}
-              {{submissions.s_code}}
+              hello
+                {% for submission in submissions %}
+
+              {{submission.s_code}}
++
+                 {% endfor %}
             </textarea>
             </div>
 
