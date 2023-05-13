@@ -17,7 +17,8 @@ CFile = f"{FilePath}/code.c"
 
 ip_file_path = open(f'{FilePath}/input.txt','r')
 
-CONTAINER_NAME="container0"
+CONTAINER_NAME="container0" #C/C++
+CONTAINER_NAME_P="container1"   #PY
 
 ErrorCodes={
   "AC": 0, 
@@ -41,7 +42,7 @@ def set_time_limit(time_limit):
     signal.signal(signal.SIGALRM, signal_handler)
     signal.alarm(TimeoutLimit)
 
-MemoryLimit = 256*1024*1024
+MemoryLimit = 512*1024*1024
 def set_memory_limit():
     resource.setrlimit(resource.RLIMIT_CPU, (TimeoutLimit, TimeoutLimit))
     resource.setrlimit(resource.RLIMIT_AS, (MemoryLimit, MemoryLimit))
@@ -49,14 +50,14 @@ def set_memory_limit():
 
 def execute_python_code():
     try:
-        process = subprocess.Popen(f"docker exec {CONTAINER_NAME} sh -c 'timeout 1s python3 src/code.py < src/input.txt'",stdout=subprocess.PIPE, stderr=subprocess.PIPE,preexec_fn=set_time_limit(TimeoutLimit),shell=True)
+        process = subprocess.Popen(f"docker exec {CONTAINER_NAME_P} sh -c 'timeout 5s python3 src/code.py < src/input.txt'",stdout=subprocess.PIPE, stderr=subprocess.PIPE,preexec_fn=set_time_limit(TimeoutLimit),shell=True)
             
         # # wait for the command to finish and get the stdout and stderr
-        stdout, stderr = process.communicate()
+        stdout, stderr = process.communicate(timeout=5)
         print("-------------------------------------------------------------------------------")
 
         ListOfReturn =stderr.decode().strip().split()
-        print("H:",ListOfReturn, "returncode",process.returncode)
+        print("H:",ListOfReturn, "returncode",process.returncode, "error",process.stderr)
         # check for any errors in stderr
         if process.returncode != 0:
             process.kill()
@@ -151,7 +152,7 @@ def CopyOpFile(stdout,rCode):
 def execute_cpp_code():
     # args = ['docker','exec','g++', '-o', f'{FilePath}/code', CppFile] # compile the file and generate an output executable
 
-    process = subprocess.Popen(f"docker exec {CONTAINER_NAME} sh -c 'timeout 1s g++ src/code.cpp'", stdout=subprocess.PIPE, stderr=subprocess.PIPE,shell=True)
+    process = subprocess.Popen(f"docker exec {CONTAINER_NAME} sh -c 'g++ src/code.cpp'", stdout=subprocess.PIPE, stderr=subprocess.PIPE,shell=True)
     output, error = process.communicate()
     # error = process.stderr
     print(process.returncode)
@@ -164,24 +165,45 @@ def execute_cpp_code():
         CopyReturnCode(error,ErrorCodes["CE"])
         print("Compile Error:")
         # print(error.decode('utf-8'))
+    # elif subprocess.TimeoutExpired:
+    #         process.kill()    # terminate the process if it exceeds the timeout
+    #         CopyReturnCode(error,ErrorCodes["TLE"])
+    #         print("Time Limit Exceeded", "timeouts exceeded")
+    #         exit()
     else:
         executable = f'{FilePath}/./code'
         try:
-            process = subprocess.Popen(f"docker exec {CONTAINER_NAME} sh -c 'timeout 1s ./a.out < src/input.txt'", stdout=subprocess.PIPE, stderr=subprocess.PIPE,shell=True)
+            process = subprocess.Popen(f"docker exec {CONTAINER_NAME} sh -c '/a.out < src/input.txt'", stdout=subprocess.PIPE, stderr=subprocess.PIPE,preexec_fn=set_time_limit(TimeoutLimit),shell=True)
 
             out, err = process.communicate(timeout=1) # timeout after 5 seconds
             # print("try block err : ",err.decode().split())
             print("try block err : ")
         except subprocess.TimeoutExpired:
+            err = b'Time Limit Exceeded'
+            #kill running process inside container
+            a = subprocess.run(f"docker exec {CONTAINER_NAME} sh -c 'pkill a.out'", shell=True)
+            #kill subprocess
             process.kill()    # terminate the process if it exceeds the timeout
             CopyReturnCode(err,ErrorCodes["TLE"])
             print("Time Limit Exceeded")
+            exit()
+        except TimeoutError:
+            err=b'Time Limit Exceeded'
+            a = subprocess.run(f"docker exec {CONTAINER_NAME} sh -c 'pkill a.out'", shell=True)
+            #kill subprocess
+            process.kill()    # terminate the process if it exceeds the timeout
+            CopyReturnCode(err,ErrorCodes["TLE"])
+            print("Time Limit Exceeded, subprocess.timeoutexpired")
             exit()
         except subprocess.CalledProcessError:
             CopyReturnCode(err,ErrorCodes["MLE"])
             print("inside 3rd except : ")
 
-        if err:
+        if out:
+            # print("Output aaya : ",out)
+            CopyOpFile(out,ErrorCodes["AC"])
+            print("AC CPP")
+        elif err:
             CopyReturnCode(err,ErrorCodes["RE"])
             print("Runtime Error1:")
             # print(err.decode('utf-8'))
@@ -203,39 +225,64 @@ def execute_c_code():
     #docker exec container2 sh -c 'python3 src/code.py < src/input.txt'
     # args = ['docker','exec',f'{CONTAINER_NAME}','gcc', '-o', f'{FilePath}/ccode', CFile] # compile the file and generate an output executable
 
-    process = subprocess.Popen(f"docker exec {CONTAINER_NAME} sh -c 'timeout 1s gcc src/code.c'", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    output, error = process.communicate(timeout=1)
+    process = subprocess.Popen(f"docker exec {CONTAINER_NAME} sh -c 'gcc src/code.c'", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    output, error = process.communicate()
     # error = process.stderr
     print("executable file ",error)
 
     print("return code ->",process.returncode)
     if process.returncode==124:
         CopyReturnCode(error,ErrorCodes["TLE"])
-        print("Time Limit Exceeded")
-    elif error:
+        print("Time Limit Exceeded!")
+    if error:
         CopyReturnCode(error,ErrorCodes["CE"])
         print("Compile Error:")
         # print(error.decode('utf-8'))
+    # elif subprocess.TimeoutExpired:
+    #         process.kill()    # terminate the process if it exceeds the timeout
+    #         CopyReturnCode(error,ErrorCodes["TLE"])
+    #         print("Time Limit Exceeded!!")
+    #         print("Killed during compilation")
+    #         exit()
     else:
         # executable = f'{FilePath}/./ccode'
         err=b''
         try:
-            process = subprocess.Popen(f"docker exec {CONTAINER_NAME} sh -c 'timeout 1s ./a.out < src/input.txt'", stdin=ip_file_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE,shell=True)
+            process = subprocess.Popen(f"docker exec {CONTAINER_NAME} sh -c './a.out < src/input.txt'", stdin=ip_file_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE,preexec_fn=set_time_limit(TimeoutLimit),shell=True)
             # print(process.returncode)
+            print("C k return code",process.returncode)
 
             out, err = process.communicate(timeout=1) # timeout after 5 seconds
             # print("try block err : ",err.decode().split())
-            print("try block err : ")
+            print("C ka try block err : ",err)
+            print("C ka output :", out)
         except subprocess.TimeoutExpired:
+            #kill running process inside container
+            err=b'Time Limit Exceeded'
+            a = subprocess.run(f"docker exec {CONTAINER_NAME} sh -c 'pkill a.out'", shell=True)
+            #kill subprocess
             process.kill()    # terminate the process if it exceeds the timeout
             CopyReturnCode(err,ErrorCodes["TLE"])
-            print("Time Limit Exceeded")
+            print("Time Limit Exceeded, subprocess.timeoutexpired")
             exit()
+        except TimeoutError:
+            err=b'Time Limit Exceeded'
+            a = subprocess.run(f"docker exec {CONTAINER_NAME} sh -c 'pkill a.out'", shell=True)
+            #kill subprocess
+            process.kill()    # terminate the process if it exceeds the timeout
+            CopyReturnCode(err,ErrorCodes["TLE"])
+            print("Time Limit Exceeded, subprocess.timeoutexpired")
+            exit()
+
         except subprocess.CalledProcessError:
             CopyReturnCode(err,ErrorCodes["MLE"])
             print("inside 3rd except : ")
 
-        if err:
+        if out:
+            print("Output aaya : ",out)
+            CopyOpFile(out,ErrorCodes["AC"])
+            print("AC CPP")
+        elif err:
             CopyReturnCode(err,ErrorCodes["RE"])
             print("Runtime Error1:")
             # print(err.decode('utf-8'))

@@ -31,6 +31,7 @@ def execute(code, tc, language):
 
 
 def runCode(que_num, code, language,btn_click_status,user_test):             #btn_click_status true = submit and false = run
+    #run
     TC_Status = {}
     # print("fffffffffff",user_test)
     if (btn_click_status==0):
@@ -50,7 +51,7 @@ def runCode(que_num, code, language,btn_click_status,user_test):             #bt
         # print("in run code for run clicke",TC_Status)
         clearAll()
         return TC_Status
-    
+    #submit
     TCs = Testcases.objects.filter(q_id=que_num).order_by('t_id')
     # print("TEst casesinside runcode ",TCs)
     outputList = []
@@ -58,8 +59,10 @@ def runCode(que_num, code, language,btn_click_status,user_test):             #bt
     TC_Status["ShortFormOfStatus"]=[]
     for tc in TCs:
         output, err, rc = execute(code, tc, language)
-        print(tc.t_ip, "tc")
-        print(output)
+        # print("test input inside",tc.t_ip, "tc")
+        # print(output)
+        # print(output, err, rc) #remove
+
         # print("runCode output files : ",output,"err : ",err,"return code : ",rc)
 
         if int(rc) != 0:
@@ -86,10 +89,20 @@ def compare(output, tc):
     try:
         with open(tc.t_op.path, "r") as correct_output:
             x = correct_output.read().strip()
-            # print("actual : ",x,"user : ",output)
-            return output.strip() == x
+            return compare_outputs
     except:
+        # print("false aya")
         return False
+
+def compare_outputs(expected_output, actual_output):
+    expected_lines = expected_output.strip().split('\n')
+    actual_lines = actual_output.strip().split('\n')
+    if len(expected_lines) != len(actual_lines):
+        return False
+    for i in range(len(expected_lines)):
+        if expected_lines[i].rstrip() != actual_lines[i].rstrip():
+            return False
+    return True
 
 
 def copy_run_py(language):
@@ -133,6 +146,7 @@ def clearAll():
         f.write('')
     with open(f"{codeRunnerPath}/error.txt", 'w') as f:
         f.write('')
+        
     with open(f"{codeRunnerPath}/returncode.txt", 'w') as f:
         f.write('')
 
@@ -150,6 +164,3 @@ def execute_run(code, tc, language):
     run = subprocess.run(f"python3 {codeRunnerPath}/codeRun.py", shell=True)
 
     return get_output_files()
-
-
-
