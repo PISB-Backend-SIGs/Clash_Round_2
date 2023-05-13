@@ -18,17 +18,21 @@ def get_leaderboard(team_set,user_set):
             # print("one ele")
             # print(user_list[0].username)
             inner_dict["place"]=place+1
-            inner_dict["user1"]=user_list[0].username
-            inner_dict["user2"]=user_list[1].username
+            inner_dict["user"]=user_list[0].username+ " & "+user_list[1].username
             inner_dict["score"]=team.team_score
             inner_dict["attempted_question"]=team.team_attempted
             inner_dict["Time"]=team.teamTime
+            team.t_rank = inner_dict["place"]
+            team.save()
         else:
             inner_dict["place"]=place+1
-            inner_dict["user1"]=user_list[0].username
+            inner_dict["user"]=user_list[0].username
             inner_dict["score"]=team.team_score
             inner_dict["attempted_question"]=team.team_attempted
             inner_dict["Time"]=team.teamTime
+            team.t_rank = inner_dict["place"]
+            team.save()
+
         place += 1
         dict.append(inner_dict)
     # print(dict)

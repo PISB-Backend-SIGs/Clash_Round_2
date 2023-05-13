@@ -62,9 +62,9 @@
                 <a
                   class="nav-link navvi"
                   aria-current="page"
-                  href="{% url 'submission' %}"
+                  href="{% url 'leaderboard' %}"
                   style="margin-left: 10px; margin-right: 10px;color:aliceblue;"
-                  >Submissions</a
+                  >Leaderboard</a
                 >
               </li>
   
@@ -173,12 +173,8 @@
             </div> -->
             <div class = "modal-text container text-center">
             <textarea id="freeform" name="freeform" rows="14" cols="55">
-              hello
-                {% for submission in submissions %}
-
-              {{submission.s_code}}
-+
-                 {% endfor %}
+              {% comment %} {%  %}for submission  {% endcomment %}
+              {{submissions.s_code}}
             </textarea>
             </div>
 

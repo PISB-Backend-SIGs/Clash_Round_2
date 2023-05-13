@@ -44,6 +44,7 @@ class Team(models.Model):
     # team_id = models.IntegerField()
     user = models.ManyToManyField(User)
     team_score = models.IntegerField(default=0)
+    t_rank = models.IntegerField(default=0)
     team_attempted = models.IntegerField(default=0)
     teamTime =models.DateTimeField()
 
