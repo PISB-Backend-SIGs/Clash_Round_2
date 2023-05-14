@@ -72,10 +72,9 @@
     </nav>
     <div>
         {% for message in messages %}
-        <div class="text-center mt-1 mb-1" >
-       <h3 style="color:red; padding:7px 14PX; margin:3px auto; border:2px solid transparent; border-radius:5px; background-color:inherit; width:fit-content; align-self:center; box-shadow: 1px 1px 7px lightblue,-1px -1px 7px lightblue,1px 1px 7px lightblue;font-size:1.4rem;"> {{message}}</h3>
-        </div>
-        {% endfor %}
+      <div class="alert alert-danger"><icon><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="yellow" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></icon>
+      <p class="alertmsg">{{message}}</p></div>
+      {% endfor %}
     </div>
     <div class="login-box">
         <h2>Login</h2>

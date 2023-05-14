@@ -101,13 +101,14 @@ def userRegister(request):
 @login_required(login_url='login')
 def questions(request):
     user=User.objects.get(username=request.user)
+    player=Player.objects.get(user=user)
     team = Team.objects.get(user=user)
     questions = Question.objects.all()
     check_accuracy()
     ques_list=check_solved(team)   #To show user which questions are solved
     end_time = Contest_time.objects.get(id=1)
     var = str(end_time.end_time.astimezone())
-    return render(request,"app1/QuestionHub.html",{"questions":questions,"player":user,"ques_list":ques_list, "end_time":var,"team_score":team.team_score})
+    return render(request,"app1/QuestionHub.html",{"questions":questions,"player":player,"ques_list":ques_list, "end_time":var,"team_score":team.team_score})
 
 @login_required(login_url='login')
 def question(request,id):
@@ -198,8 +199,8 @@ def question_sub(request,id):
             except:
                 submissionFlag = True
                 submission.q_status = "AC"
-                marks_reduce = calc_score(Submission.objects.filter(team=team,q_id=id))  #It gives how many marks will be reducing
-                team.team_score += (question.q_point - marks_reduce)    #It will store marks for that question in team 
+                # marks_reduce = calc_score(Submission.objects.filter(team=team,q_id=id))  #It gives how many marks will be reducing
+                team.team_score += (question.q_point)    #It will store marks for that question in team 
                 submission.s_pt = team.team_score
                 question.q_point -=1
                 question.save()

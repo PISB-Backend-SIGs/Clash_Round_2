@@ -103,6 +103,14 @@ table.dataTable.no-footer {
     
 }
 
+.modal-content{
+    background-color: rgba(42, 81, 116, 0.945);
+color:white}
+
+.modal-text  textarea{
+    background-color: rgba(208, 216, 229, 0.919);
+    padding: 10px;
+}
 table.dataTable tbody tr {
     background-color: #18335c;
 }

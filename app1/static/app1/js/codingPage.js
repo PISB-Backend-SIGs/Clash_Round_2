@@ -26,21 +26,51 @@ langSelect.addEventListener('change', function() {
 
   // Set the mode of the Ace editor based on the selected language  and set the boier plate accordingly   
     if(selectedLang==='cpp'){
-      editor.session.setMode(`ace/mode/c_cpp`);
-      editor.session.setValue("");
-      editor.session.setValue("#include<iostream>\nusing namespace std;\nint main(){\n\n\n\t//write your code here \n\treturn 0;\n}"); 
+      if(localStorage.getItem('codes') !==null){
+        codes = JSON.parse(localStorage.getItem('codes'));
+        let text=codes.cpp;
+        editor.session.setMode(`ace/mode/c_cpp`);
+        editor.session.setValue("");
+        editor.session.setValue(`${text}`); 
+      }
+      else{
+        editor.session.setMode(`ace/mode/c_cpp`);
+        editor.session.setValue("");
+        editor.session.setValue("#include<iostream>\nusing namespace std;\nint main(){\n\n\n\t//write your code here \n\treturn 0;\n}"); 
+
+      }
       
     }
     if(selectedLang==='c'){
-      editor.session.setMode(`ace/mode/c_cpp`);
-      editor.session.setValue("");
-      editor.session.setValue("#include<stdio.h>\n\n void main(){\n\n\n\t//write your code here \n}");
+      if(localStorage.getItem('codes') !==null){
+        codes = JSON.parse(localStorage.getItem('codes'));
+        let text=codes.c;
+        editor.session.setMode(`ace/mode/c_cpp`);
+        editor.session.setValue("");
+        editor.session.setValue(`${text}`); 
+      }
+      else{
+
+        editor.session.setMode(`ace/mode/c_cpp`);
+        editor.session.setValue("");
+        editor.session.setValue("#include<stdio.h>\n\n void main(){\n\n\n\t//write your code here \n}");
+      }
     }
   
   if(selectedLang==='python'){
-    editor.session.setMode(`ace/mode/${selectedLang}`);
-    editor.session.setValue("");
-    editor.session.setValue("#Write the Python code.....");
+    if(localStorage.getItem('codes') !==null){
+      codes = JSON.parse(localStorage.getItem('codes'));
+      let text=codes.python;
+      editor.session.setMode(`ace/mode/c_cpp`);
+      editor.session.setValue("");
+      editor.session.setValue(`${text}`); 
+    }
+    else{
+
+      editor.session.setMode(`ace/mode/${selectedLang}`);
+      editor.session.setValue("");
+      editor.session.setValue("#Write the Python code.....");
+    }
     
   }
 
@@ -72,36 +102,44 @@ fileInput.addEventListener("change", function() {
 //code for scrolling on to the status div 
 
 
-// const submitBtn = document.querySelector('#submit-btn');
-const submitBtn = document.querySelector('#submit_code');
-const consoleBtn=document.querySelector('#console-btn');
-const statusDiv = document.querySelector('.Status');
-const consoleDiv = document.querySelector('.consoleBlocks');
+// // const submitBtn = document.querySelector('#submit-btn');
+// const submitBtn = document.querySelector('#submit_code');
+// const consoleBtn=document.querySelector('#console-btn');
+// const statusDiv = document.querySelector('.Status');
+// const consoleDiv = document.querySelector('.consoleBlocks');
 
-submitBtn.addEventListener('click', () => {
-  statusDiv.scrollIntoView({ behavior: 'smooth' });
-});
-consoleBtn.addEventListener('click', () => {
-  consoleDiv.scrollIntoView({ behavior: 'smooth' });
-});
+// submitBtn.addEventListener('click', () => {
+//   statusDiv.scrollIntoView({ behavior: 'smooth' });
+// });
+// consoleBtn.addEventListener('click', () => {
+//   consoleDiv.scrollIntoView({ behavior: 'smooth' });
+// });
 
 
 
 //console buttons onclicke events 
 
-var consoleBtnn = document.getElementById("console-btn");
-var consoleBtnDown = consoleBtnn.querySelector(".down");
-var consoleBtnUp = consoleBtnn.querySelector(".up");
+// var consoleBtnn = document.getElementById("console-btn");
+// var consoleBtnDown = consoleBtnn.querySelector(".down");
+// var consoleBtnUp = consoleBtnn.querySelector(".up");
 
-consoleBtnn.addEventListener("click", function() {
-  if (consoleBtnDown.classList.contains("hidden")) {
-    consoleBtnDown.classList.remove("hidden");
-    consoleBtnUp.classList.add("hidden");
-  } else {
-    consoleBtnDown.classList.add("hidden");
-    consoleBtnUp.classList.remove("hidden");
-  }
-});
+// consoleBtnn.addEventListener("click", function() {
+//   if (consoleBtnDown.classList.contains("hidden")) {
+//     consoleBtnDown.classList.remove("hidden");
+//     consoleBtnUp.classList.add("hidden");
+//   } else {
+//     consoleBtnDown.classList.add("hidden");
+//     consoleBtnUp.classList.remove("hidden");
+//   }
+
+
+  // if(editor1.classList.contains("hidden")){
+  //   editor1.classList.remove("hidden");
+  //  }
+  //  else{
+  //      editor1.classList.add("hidden");
+  //  }
+// });
 
 
 

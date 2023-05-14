@@ -107,6 +107,7 @@ color: #4cd6a8;
   border-radius: 50px;
   background: #222222 ;
   color: white;
+  flex-wrap: nowrap;
   border: 2px solid #126E82;
   
 }

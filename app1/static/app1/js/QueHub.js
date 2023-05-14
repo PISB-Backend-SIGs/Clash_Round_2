@@ -6,6 +6,15 @@ const tasks = [
     { id: 5, name: 'Find the factorial', progress: 67.7 ,link:5},
     { id: 6, name: 'Is the number Palindrome', progress: 33.3,link:6 }
 ];
+
+const tasks = [
+    { id: 1, name: 'Reverse the String', progress: 25 ,link:1},
+    { id: 2, name: 'Determine the Score', progress: 50 ,link:2},
+    { id: 3, name: 'Add two numbers', progress: 75 ,link:3},
+    { id: 4, name: 'Sorting an Array', progress: 100 ,link:4},
+    { id: 5, name: 'Find the factorial', progress: 67.7 ,link:5},
+    { id: 6, name: 'Is the number Palindrome', progress: 33.3,link:6 }
+];
   
   
   const tbody = document.querySelector('tbody');

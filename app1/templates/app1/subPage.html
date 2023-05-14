@@ -145,8 +145,8 @@
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" li>
               Cancel
             </button>
-            <button type="button" class="btn btn-danger">
-              <a href="{% url 'logout' %}">Logout</a>
+            <button type="button"  class="btn btn-danger">
+              <a style="text-decoration:none;color:white" href="{% url 'logout' %}">Logout</a>
             </button>
           </div>
         </div>
@@ -171,22 +171,37 @@
                 Sapien nec sagittis aliquam malesuada bibendum arcu vitae elementum curabitur.
                 Tempus urna et pharetra pharetra massa massa. Ut eu sem integer vitae justo eget. Consequat ac felis donec et..</p>
             </div> -->
-            <div class = "modal-text container text-center">
+            <div class = "modal-text container text-center" id = "div1">
             <textarea id="freeform" name="freeform" rows="14" cols="55">
-              {% comment %} {%  %}for submission  {% endcomment %}
               {{submissions.s_code}}
             </textarea>
             </div>
 
             <div class="modal-footer">
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn2">Copy Submission</button>
+              <button type="button" class="btn2" onclick="CopyToClipboard('div1')">Copy Submission</button>
               <!-- <button type="button" class="btn2">Save Changes</button> -->
             </div>
           </div>
         </div>
     </div>
 
+    <script>
+      function CopyToClipboard(containerid) {
+        if (document.selection) {
+          var range = document.body.createTextRange();
+          range.moveToElementText(document.getElementById(containerid));
+          range.select().createTextRange();
+          document.execCommand("copy");
+        } else if (window.getSelection) {
+          var range = document.createRange();
+          range.selectNode(document.getElementById(containerid));
+          window.getSelection().addRange(range);
+          document.execCommand("copy");
+          alert("Text has been copied, now paste in the text-area")
+        }
+      }
+    </script>
     
 
 

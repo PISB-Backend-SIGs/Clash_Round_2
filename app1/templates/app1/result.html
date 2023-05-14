@@ -156,7 +156,7 @@
               
               <div class="row fs-4" id="onetri">
                 <div class="col-md-12 font_wt">
-                  <h3 id="tri">Question Attempts</h3>
+                  <h3 id="tri">Question<br> Attempts</h3>
                   {{teamResult.team_attempted}}</div>
               </div>
            </div>
@@ -176,7 +176,7 @@
       </div>
   </div>
 
-  <div class="col-md-6 mid-align">
+  <div class="col-md-6 mid-align" id="rib">
     <div class="row justify-content-center">
       <div class="row justify-content-evenly align-items-center mt-3 mb-4" >
               {% comment %} 
@@ -250,7 +250,7 @@
           <div class="row justify-content-between py-2 mt-0" id="one">
             <div class="col-2 mid-align" id="bor">4th</div>
                 {% for team in teams %}
-                  {% if team.place == 4 %}
+                {% if team.place == 4 %}
                         {{team.user}}
 
                 <span class="mid-align"><td>{{team.score}} </td></span>

@@ -18,12 +18,25 @@ class Question(models.Model):
     q_sop = models.TextField(null=True,blank=True)
     q_diff_level = models.CharField( max_length=50)
     q_point = models.IntegerField(default=0)
+    # questionMaxScore = models.IntegerField(null = True)
     q_aqrcy = models.IntegerField(default=0)
     q_subns = models.IntegerField(default=0)
     q_time_limit = models.IntegerField(null=True,default=1)
     q_memory_limit = models.IntegerField(null=True,default=50000)
+    CATEGORY_CHOICES = [
+        ('senior', 'senior'),
+        ('junior', 'junior'),
+        ('both', 'both'),
+    ]
+    category = models.CharField(choices=CATEGORY_CHOICES, max_length=10, null=True, blank=True)
+    image = models.URLField(blank=True, null=True)
     def __str__(self):
         return f"{self.q_id}"
+
+    # def save(self, *args, **kwargs):
+    #     if not self.id:
+    #         self.questionMaxScore = self.q_point
+    #     super(Question, self).save(*args, **kwargs)
 
 class Testcases(models.Model):
     q_id = models.ForeignKey(Question, on_delete=models.CASCADE)

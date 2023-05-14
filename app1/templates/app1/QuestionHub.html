@@ -146,7 +146,7 @@
   hours = hours < 10 ? '0' + hours : hours;
   minutes = minutes < 10 ? '0' + minutes : minutes;
   seconds = seconds < 10 ? '0' + seconds : seconds;
-  console.log(hours+":"+ minutes + ":" +seconds)
+  //console.log(hours+":"+ minutes + ":" +seconds)
   document.getElementById('timerDisplay').innerHTML = hours+":"+ minutes + ":" +seconds;
             // var sub_btn = document.getElementById("submit_btn");
             // sub_btn.name = "nsubmit";
@@ -161,6 +161,64 @@
 
         
     </script>
+
+    <!-- {% include 'app1/ajax/QueHub.html' %} -->
+    <script>
+      console.log(typeof('{{player.p_is_junior}}'));
+      console.log('{{player.p_is_junior}}');
+      let a ='{{questions | safe}}'
+console.log(a[0])
+
+    let tasks = []
+    if (('{{player.p_is_junior}}') ==='False'){
+      tasks = [
+          { id: 1, name: 'senio',"marks":100,link:1},
+          { id: 2, name: 'Determine the Score',"marks":200,link:2},
+          { id: 3, name: 'Add two numbers',"marks":300,link:3},
+          { id: 4, name: 'Sorting an Array',"marks":400,link:4},
+          { id: 5, name: 'Find the factorial',"marks":500, link:5},
+          { id: 6, name: 'Is the number Palindrome',"marks":600, link:6 }
+      ];
+    
+    }else{
+      tasks = [
+        { id: 1, name: 'junior',link:1},
+        { id: 2, name: 'Determine the Score',link:2},
+        { id: 3, name: 'Add two numbers',link:3},
+        { id: 4, name: 'Sorting an Array',link:4},
+        { id: 5, name: 'Find the factorial', link:5},
+        { id: 6, name: 'Is the number Palindrome', link:6 }
+      ];
+    }
+      
+    
+    console.log(tasks)
+      
+      const tbody = document.querySelector('tbody');
+      
+    
+      const rows = tasks.map(task => `
+    
+        <div class="card">    
+            
+            <p class="thwala">${task.id}. ${task.name}</p>  
+            <div class="thwala" id="progress">
+              
+            </div>
+            <div class="thwala">
+              <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">  <a href="${task.link}">SOLVE</a>  </button>
+            </div>
+        </div>
+      `);
+      
+      tbody.innerHTML =`<div class="badadiv">${rows.join('')} </div>`
+    
+    
+    
+      // <div class="progress" style="height: 25px;">
+      //           <div class="progress-bar" role="progressbar" style="width: ${task.progress}%;" aria-valuenow="${task.progress}" aria-valuemin="0" aria-valuemax="100">${task.progress}%</div>
+      //         </div>
+      </script>
 </body>
 
 </html>

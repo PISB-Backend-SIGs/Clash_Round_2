@@ -175,7 +175,7 @@ def execute_cpp_code():
         try:
             process = subprocess.Popen(f"docker exec {CONTAINER_NAME} sh -c '/a.out < src/input.txt'", stdout=subprocess.PIPE, stderr=subprocess.PIPE,preexec_fn=set_time_limit(TimeoutLimit),shell=True)
 
-            out, err = process.communicate(timeout=1) # timeout after 5 seconds
+            out, err = process.communicate(timeout=1.5) # timeout after 5 seconds
             # print("try block err : ",err.decode().split())
             print("try block err : ")
         except subprocess.TimeoutExpired:
@@ -252,7 +252,7 @@ def execute_c_code():
             # print(process.returncode)
             print("C k return code",process.returncode)
 
-            out, err = process.communicate(timeout=1) # timeout after 5 seconds
+            out, err = process.communicate(timeout=1.5) # timeout after 5 seconds
             # print("try block err : ",err.decode().split())
             print("C ka try block err : ",err)
             print("C ka output :", out)

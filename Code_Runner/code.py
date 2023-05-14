@@ -1,2 +1,1 @@
-#Write the Python code.....
-print(3)
+print(input()[::-1])

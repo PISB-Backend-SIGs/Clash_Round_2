@@ -87,7 +87,7 @@
               href="{% url 'leaderboard' %}" data-bs-target="#LogoutModal">Leaderboard</a>
           </li>
           
-            <li class="nav-item navvi">
+            <!-- <li class="nav-item navvi">
               <a
                 class="nav-link navvi"
                 style="margin-left: 10px; margin-right: 10px; cursor: pointer;color:lightblue;cursor: pointer;font-size:1.7rem;"
@@ -97,13 +97,9 @@
               >
 
 
-            <!-- <button type="button" class="btn btn-primary">
-              Launch demo modal
-            </button> -->
-
-            <!-- Modal -->
            
-          </li>
+           
+          </li> -->
         </ul>
       </div>
       <a class="navbar-brand navvi pisblogo" href="#" style="padding: 0px; margin-left: 20px"><img
@@ -126,9 +122,9 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" li>
           Cancel
         </button>
-        <button type="button" class="btn btn-danger">
+        <!-- <button type="button" class="btn btn-danger">
           <a href="{% url 'logout' %}">Logout</a>
-        </button>
+        </button> -->
       </div>
     </div>
   </div>
@@ -137,6 +133,11 @@
 <section class="head-strip">
          <!-- Question numbers -->
    <div class="questions ">
+    <div class="heading-div">
+      <h4 class="text-center que-heading">
+        Questions: 
+      </h4>
+</div>
      <div class="queno"><button type="button  "class=" btn  btn-dark qb  " id="qbtn1" onclick="location.href='/question/1'">1</button></div>
      <div class="queno"><button type="button " class=" btn btn-dark qb  " id="qbtn2" onclick="location.href='/question/2'">2</button></div>
      <div class="queno"><button type="button " class=" btn btn-dark   qb" id="qbtn3" onclick="location.href='/question/3'">3</button></div>
@@ -164,9 +165,12 @@
   </div>
    <div class="quepart que-description" style="height: auto;">
     <h4 >Question Description</h4>
+    {% if  question.image %}
     <div class="queimg text-center">
-      <img src="http://images5.fanpop.com/image/photos/30600000/random-random-30660647-1280-1024.png" alt="loding">
+      <img src="{{question.image}}" alt="loding">
+
     </div>
+    {% endif %}
      <p > {{question.q_descrp}} </p>
    </div>
    <div class="quepart que-constrains">
@@ -208,18 +212,20 @@
       </div>
 
       <!-- comsole section -->
-       <div class="collapse mainconsole" id="test-cases" >
-         <h4> TEST-CASES</h4>
+       <div class="collapse mainconsole text-center" id="test-cases" >
+         <div  style="display: flex;">
+            <h3 class="text-center"> TEST-CASES</h3>
+            <div class="spinner"></div>
+          </div>    
+        <div class="consoleBlocks ">
 
-        <div class="consoleBlocks">
-
-         <div class="block1">
-           <h5>// Custom Input  </h5>
+         <div class="block1 text-center">
+           <h5 class="text-center"> Custom Input  </h5>
            <textarea id="testip">{{question.q_sip}}</textarea>
          </div>
-         <div class="block1">
-           <h5>This is Output </h5>
-           <textarea id="testop" disabled >{{question.q_sop}}</textarea>
+         <div class="block2">
+           <h5 class="text-center"> Output </h5>
+           <div id="testop" disabled >{{question.q_sop}}</div>
          </div>
 
         </div>
@@ -239,8 +245,8 @@
       <div class="console">
         <button type="button" class="console-btn d-flex flex-wrap " data-toggle="collapse" id="console-btn"data-target="#test-cases" >
           Console
-          <ion-icon name="chevron-up-outline" class="up mx-2 "></ion-icon>
-          <ion-icon name="chevron-down-outline" class="down hidden"></ion-icon>
+          <ion-icon name="chevron-up-outline"style=" font-size:18px" class="up mx-2 "></ion-icon>
+          <ion-icon name="chevron-down-outline" style=" font-size:18px"class="down hidden"></ion-icon>
         </button>
     </div>
       <div class="submit-btn">
@@ -260,10 +266,12 @@
   Answer is Correct /Failed.
 </div>
 <div class="alltext d-flex flex-wrap ">
- <div class="test d-flex mx-3"> Test Case 1   <ion-icon name="close-circle-outline" class="mx-3 my-1" size="large"></ion-icon> </div>
- <div class="test d-flex mx-3"> Test Case 2  <ion-icon name="checkmark-circle-outline" class="mx-3 my-1" size="large"></ion-icon></div>
- <div class="test d-flex mx-3"> Test Case 3  <ion-icon name="checkmark-circle-outline" class="mx-3 my-1" size="large"></ion-icon></div>
- <div class="test d-flex mx-3"> Test Case 4  <ion-icon name="checkmark-circle-outline" class="mx-3 my-1" size="large"></ion-icon></div>
+  <!-- <this is for wrong  -->
+    <div class="test d-flex mx-3" style="align-items: center;"> Test Case 1   <ion-icon name="close-circle-outline" class="mx-3 my-1"  size="large"></ion-icon> </div>
+ <!-- <this is for correct  -->
+    <div class="test d-flex mx-3" style="align-items: center;"> Test Case 2  <ion-icon name="checkmark-circle-outline" class="mx-3 my-1" size="large"></ion-icon></div>
+ <div class="test d-flex mx-3"style="align-items: center;"> Test Case 3  <ion-icon name="checkmark-circle-outline" class="mx-3 my-1" size="large"></ion-icon></div>
+ <div class="test d-flex mx-3"style="align-items: center;"> Test Case 4  <ion-icon name="checkmark-circle-outline" class="mx-3 my-1" size="large"></ion-icon></div>
 </div> 
 {% endcomment %}
 <!-- The Min Section ENds Here  -->
@@ -293,6 +301,7 @@
   var que_no='{{question.q_id}}';
   var element=document.getElementById( "qbtn"+que_no);
   element.classList.add("glow");
+  
   function getSelectedOption() {
   var selectElement = document.getElementById("langbtn"); // replace "mySelect" with the ID of your select element
   var selectedOption = selectElement.options[selectElement.selectedIndex].value;
@@ -305,7 +314,7 @@
     var selectedOption =getSelectedOption();
     const text=editor.getValue();
     console.log(text);
-    let codes ={c:"",cpp:"",python:""};
+    let codes ={c:"#include<stdio.h>\n\n void main(){\n\n\n\t//write your code here \n}",cpp:"#include<iostream>\nusing namespace std;\nint main(){\n\n\n\t//write your code here \n\treturn 0;\n}",python:"#Write the Python code....."};
     // var cpp='{{code_lang_cpp}}'
     if(localStorage.getItem('codes') !==null)
       codes = JSON.parse(localStorage.getItem('codes'));
@@ -345,12 +354,48 @@
         // console.log('editor response',editor.getValue());
 
       }
+      else{
+        console.log('set value on referesh')
+        let codes ={c:"#include<stdio.h>\n\n void main(){\n\n\n\t//write your code here \n}",cpp:"#include<iostream>\nusing namespace std;\nint main(){\n\n\n\t//write your code here \n\treturn 0;\n}",python:"#Write the Python code....."};
+        localStorage.setItem('codes', JSON.stringify(codes)); 
+
+      }
     }
 
     window.onload = myFunction;
   
   </script>
+<script>
+  
 
+  var consoleBtnn = document.getElementById("console-btn");
+var consoleBtnDown = consoleBtnn.querySelector(".down");
+var consoleBtnUp = consoleBtnn.querySelector(".up");
+
+consoleBtnn.addEventListener("click", function() {
+  if (consoleBtnDown.classList.contains("hidden")) {
+    consoleBtnDown.classList.remove("hidden");
+    consoleBtnUp.classList.add("hidden");
+  } else {
+    consoleBtnDown.classList.add("hidden");
+    consoleBtnUp.classList.remove("hidden");
+  }
+
+  if(editor1.classList.contains("hidden")){
+    editor1.classList.remove("hidden");
+    langSelect.classList.remove("hidden")
+   }
+   else{
+       editor1.classList.add("hidden");
+       langSelect.classList.add("hidden")
+   }
+});
+
+
+//console buttons onclicke events 
+
+
+</script>
 {% include 'app1/ajax/ajax.html' %}
 </body>
 </html>

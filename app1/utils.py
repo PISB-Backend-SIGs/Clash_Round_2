@@ -4,16 +4,18 @@ def last_submission(submission_query_set):
     for submission in submission_query_set:
         last_element = submission.s_code
         print(last_element)
-    return last_element
+        return last_element
 
 
 
 def get_leaderboard(team_set,user_set):
     place=0
-    dict=[]
+    rankList=[]
     for team in team_set:
-        user_list=user_set.filter(team__id=team.id)
         inner_dict={}
+        user_list=user_set.filter(team__id=team.id)
+        # sub = Submission.objects.00filter()
+        
         if len(user_list)>=2:
             # print("one ele")
             # print(user_list[0].username)
@@ -34,10 +36,11 @@ def get_leaderboard(team_set,user_set):
             team.save()
 
         place += 1
-        dict.append(inner_dict)
-    # print(dict)
-    return dict
+        rankList.append(inner_dict)
+    # print(rankList)
+    return rankList
 
+# def getLeaderBoardQuestion(submission,)
 
 def check_accuracy():
     questions= Question.objects.all()
@@ -76,3 +79,7 @@ def calc_score(submissions):
     numberOfRightSubmission = len(submissions.filter(q_status="AC"))
     marks_reduce = numberOfWrongSubmission*10
     return marks_reduce
+
+
+
+

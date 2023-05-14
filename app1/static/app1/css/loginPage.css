@@ -25,12 +25,24 @@ gap: 20px; /* Add some space between the columns */
 padding-bottom: 50px;
 }
 
-.errormsg{
-    background-color:#00000f;
-    border: 2px dotted red;
-    color: red;
-    margin: 2px auto;
-}
+.alert{
+    width: fit-content;
+    transition-duration: 0.2s;
+    right: 0;
+    position: fixed;
+    background-color: #064346;
+    font-size: 1rem;
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    margin: 17px 24px;
+    color: #08f4ac;
+    border: 2px solid #064346;
+    box-shadow: 1px 1px 1px #08f4ac,-1px -1px 1px #08f4ac,1px 1px 1px #08f4ac;
+  }
+  .alert p{
+    margin: auto 5px;
+  }
 
 /* Divide the grid into 2 equal columns on larger screens */
 @media only screen and (min-width: 768px) {
