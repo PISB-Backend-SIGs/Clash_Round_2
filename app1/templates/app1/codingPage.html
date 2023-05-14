@@ -189,7 +189,8 @@
 
     <div class="drop-buttons">
         <div class="lang">
-            <select class="form-select langbtn btn-outline-dark  " id="langbtn" aria-label="Default select example" style="background-color: rgba(3, 111, 212, 0.696);">
+            <select class="form-select langbtn btn-outline-dark  " id="langbtn" aria-label="Default select example" style="background-color: rgba(3, 111, 212, 0.696);"
+            onchange="selectedOptionChanged()">
                 {% comment %} <option disabled selected value=""> Choose Language</option> {% endcomment %}
                 <option value="python" selected>Python</option>
                 <option value="cpp" {% if code_lang_cpp %}selected{% endif %}>C++</option>
@@ -293,6 +294,33 @@
   var que_no='{{question.q_id}}';
   var element=document.getElementById( "qbtn"+que_no);
   element.classList.add("glow");
+
+  function selectedOptionChanged() {
+    var selectElement = document.getElementById("langbtn");
+    var selectedOption = selectElement.options[selectElement.selectedIndex].value;
+    if(localStorage.getItem('codes') !==null){
+        codes = JSON.parse(localStorage.getItem('codes'));
+        let text;
+        if(selectedOption=='cpp'){
+          text=codes.cpp;
+        }
+        else if(selectedOption=='c'){
+          text=codes.c;
+        }
+        else{
+          text=codes.python;
+        }
+        console.log('on option change',codes)
+        // console.log(typeof(text),text);
+        // editor.getSession().setValue(`${text}`);
+        editor.setValue(`${text}`);
+        console.log('editor response',editor.getValue());
+
+      }
+  // console.log(selectedOption);
+  // call your function here with the selected option value 
+  }
+
   function getSelectedOption() {
   var selectElement = document.getElementById("langbtn"); // replace "mySelect" with the ID of your select element
   var selectedOption = selectElement.options[selectElement.selectedIndex].value;
@@ -340,9 +368,7 @@
           text=codes.python;
         }
         console.log('on reload',codes)
-        // console.log(typeof(text),text);
         editor.setValue(`${text}`);
-        // console.log('editor response',editor.getValue());
 
       }
     }
