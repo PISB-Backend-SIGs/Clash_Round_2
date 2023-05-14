@@ -54,7 +54,7 @@ def userLogin(request):
                     player.p_is_loged_in = True
                     player.save()
                 else:
-                    messages.error(request, "You have already started the contest")
+                    messages.error(request, "You have already started the contest!")
                     return redirect("login")
             except:
                 player=Player(user=user,p_is_loged_in=True)
